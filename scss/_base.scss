@@ -1,0 +1,36 @@
+// ============================================
+// RESET + BASE
+// ============================================
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: $font-sans;
+  background: $color-bg;
+  color: $color-text;
+  line-height: 1.6;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  font-family: $font-display;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: $color-text;
+}
+
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+ul, ol { list-style: none; }
+button { font-family: inherit; cursor: pointer; }
