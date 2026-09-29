@@ -42,6 +42,7 @@
       <nav class="nav-links" id="navLinks" aria-label="Main navigation">
         <a href="#" data-page="home" class="active">Home</a>
         <a href="#" data-page="portfolio">Work</a>
+        <a href="blog/index.html">Writing</a>
         <a href="#" data-page="contact">Contact</a>
         <a href="#" data-page="contact" class="nav-cta">
           Start a Project <i class="fas fa-arrow-right"></i>
@@ -80,18 +81,21 @@
 
             <p class="hero-sub">
               <strong>Zuta Technology</strong> is a software engineering studio
-              in Benin City, Nigeria. We build web applications, APIs, and
-              digital products for founders and teams who need work done right
-              — and done on time.
+              in Benin City, Nigeria. I help founders and teams turn rough ideas
+              into reliable web apps, APIs, and mobile products — shipped on
+              time, built to last.
             </p>
 
             <div class="hero-cta">
               <a href="#" class="btn btn-primary" data-page="portfolio">
                 View Selected Work <i class="fas fa-arrow-right"></i>
               </a>
-              <a href="#" class="btn btn-outline" data-page="contact">
-                Book a Discovery Call
-              </a>
+              <button type="button"
+                      data-cal-link="zutatechnology/discovery-call"
+                      data-cal-config='{"layout":"month_view"}'
+                      class="btn btn-outline">
+                <i class="fas fa-calendar-check"></i> Book a Discovery Call
+              </button>
             </div>
 
             <div class="hero-stats">
@@ -213,6 +217,77 @@
             </article>
           </div>
         </div>
+      </section>
+
+      <!-- WHY ZUTA -->
+      <section class="why-section">
+        <div class="container">
+          <header class="section-head section-head-left">
+            <span class="eyebrow">Why Zuta</span>
+            <h2>Three reasons clients stay.</h2>
+            <p>No fluff. No code-jargon. Just work that holds up.</p>
+          </header>
+
+          <div class="why-grid">
+            <article class="why-card">
+              <span class="why-num">01</span>
+              <h3>Direct communication</h3>
+              <p>You work with me directly — not an account manager or a rotating team. One person owns your project end-to-end.</p>
+            </article>
+
+            <article class="why-card">
+              <span class="why-num">02</span>
+              <h3>On-time delivery</h3>
+              <p>Weekly demos, clear milestones, and honest estimates. When timelines slip, you hear about it the same day — not at launch.</p>
+            </article>
+
+            <article class="why-card">
+              <span class="why-num">03</span>
+              <h3>Code you can own</h3>
+              <p>Clean Git history, documentation, and a proper handover. Your next developer will thank you — and so will your future self.</p>
+            </article>
+          </div>
+        </div>
+
+            <!-- ABOUT -->
+    <section class="about-section">
+      <div class="container about-grid">
+
+        <div class="about-photo">
+          <img src="../zuta-technology/assets/augustine.jpg.JPG" alt="Augustine, founder of Zuta Technology" loading="lazy">
+        </div>
+
+        <div class="about-copy">
+          <span class="eyebrow">About</span>
+          <h2>Hi, I'm Augustine.</h2>
+          <p>
+            I'm a software engineer based in Benin City, Nigeria. For the past
+            five years I've been building web applications, APIs, and mobile
+            products for founders and small teams — mostly in Nigeria and across
+            West Africa.
+          </p>
+          <p>
+            I started <strong>Zuta Technology</strong> because I saw too many
+            good businesses lose money to software that was over-priced,
+            over-promised, and under-delivered. My approach is simple: ship
+            working software, communicate honestly, and stay available long
+            after launch.
+          </p>
+          <p>
+            When I'm not coding, I'm usually reading about systems design,
+            mentoring junior developers, or exploring the tech scene in Edo
+            State.
+          </p>
+
+          <ul class="about-facts">
+            <li><i class="fas fa-map-pin"></i> Benin City, Edo State. Nigeria</li>
+            <li><i class="fas fa-briefcase"></i> Available for new projects — Q1 2026</li>
+            <li><i class="fas fa-clock"></i> Typically replies within 24 hours</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
       </section>
 
       <!-- PROCESS -->
@@ -380,7 +455,7 @@
                 <div><strong>-68%</strong><span>query time</span></div>
                 <div><strong>4.9★</strong><span>user rating</span></div>
               </div>
-              <a href="#" class="work-link">Read the case study <i class="fas fa-arrow-right"></i></a>
+              <a href="case-study-taskforge.html" class="work-link">Read the case study <i class="fas fa-arrow-right"></i></a>
             </div>
           </article>
 
@@ -406,7 +481,7 @@
                 <div><strong>4.7★</strong><span>App Store</span></div>
                 <div><strong>18%</strong><span>D30 retention</span></div>
               </div>
-              <a href="#" class="work-link">Read the case study <i class="fas fa-arrow-right"></i></a>
+              <a href="case-study-taskforge.html" class="work-link">Read the case study <i class="fas fa-arrow-right"></i></a>
             </div>
           </article>
 
@@ -432,7 +507,7 @@
                 <div><strong>-41%</strong><span>review time</span></div>
                 <div><strong>2.3K</strong><span>PRs analyzed</span></div>
               </div>
-              <a href="#" class="work-link">Read the case study <i class="fas fa-arrow-right"></i></a>
+              <a href="case-study-taskforge.html" class="work-link">Read the case study <i class="fas fa-arrow-right"></i></a>
             </div>
           </article>
 
@@ -458,7 +533,7 @@
                 <div><strong>+34%</strong><span>conversion</span></div>
                 <div><strong>0</strong><span>downtime hours</span></div>
               </div>
-              <a href="#" class="work-link">Read the case study <i class="fas fa-arrow-right"></i></a>
+              <a href="case-study-taskforge.html" class="work-link">Read the case study <i class="fas fa-arrow-right"></i></a>
             </div>
           </article>
 
@@ -484,7 +559,7 @@
                 <div><strong>99.99%</strong><span>uptime</span></div>
                 <div><strong>3</strong><span>products migrated</span></div>
               </div>
-              <a href="#" class="work-link">Read the case study <i class="fas fa-arrow-right"></i></a>
+              <a href="case-study-taskforge.html" class="work-link">Read the case study <i class="fas fa-arrow-right"></i></a>
             </div>
           </article>
 
@@ -510,7 +585,7 @@
                 <div><strong>11K</strong><span>students managed</span></div>
                 <div><strong>-72%</strong><span>admin time</span></div>
               </div>
-              <a href="#" class="work-link">Read the case study <i class="fas fa-arrow-right"></i></a>
+              <a href="case-study-taskforge.html" class="work-link">Read the case study <i class="fas fa-arrow-right"></i></a>
             </div>
           </article>
 
@@ -530,6 +605,25 @@
           <p>Fill the form or send an email — you'll hear back within one business day.</p>
         </header>
 
+        <!-- BOOKING SECTION -->
+        <div class="booking-section">
+          <div class="booking-inner">
+            <span class="eyebrow">Book a Call</span>
+            <h2>Schedule a free 30-minute discovery call.</h2>
+            <p>Pick a time that works for you. We'll talk through your project, timeline, and budget — no obligation.</p>
+
+            <button type="button"
+                    data-cal-link="zutatechnology/discovery-call"
+                    data-cal-config='{"layout":"month_view"}'
+                    class="btn btn-primary">
+              <i class="fas fa-calendar-check"></i> Open Booking Calendar
+            </button>
+
+            <!-- Optional: inline calendar (uncomment to embed the calendar on the page)
+            <div id="my-cal-inline" style="width:100%;min-height:600px;margin-top:2rem;"></div>
+            -->
+          </div>
+        </div>
         <div class="contact-layout">
 
           <aside class="contact-side">

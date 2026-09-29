@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Native offline sync: a practical guide — Zuta Technology</title>
+  <meta name="description" content="How to build offline-first React Native apps using Firebase and local persistence — lessons from shipping TaskForge.">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%238200db'/%3E%3Ctext x='50' y='70' font-size='60' font-weight='bold' fill='white' text-anchor='middle' font-family='Inter,Arial,sans-serif'%3EZ%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-mark">Z</span>
+        <span class="logo-text">Zuta<span>Technology</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="../index.html#home">Home</a>
+        <a href="../index.html#portfolio">Work</a>
+        <a href="index.html" class="active">Writing</a>
+        <a href="../index.html#contact">Contact</a>
+        <a href="../index.html#contact" class="nav-cta">Start a Project <i class="fas fa-arrow-right"></i></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="post">
+    <div class="container">
+
+      <a href="index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> All articles
+      </a>
+
+      <span class="eyebrow">Engineering · React Native</span>
+      <h1>React Native offline sync: a practical guide</h1>
+
+      <div class="post-meta">
+        <span><i class="fas fa-user"></i> Augustine</span>
+        <span><i class="fas fa-calendar"></i> September 2026</span>
+        <span><i class="fas fa-clock"></i> 7 min read</span>
+      </div>
+
+      <p>
+        Most Nigerian users don't have reliable connectivity. They move between
+        4G, 3G, Wi-Fi, and no signal in a single commute. If your app requires
+        the network to function, it will feel broken half the time — regardless
+        of how good your backend is.
+      </p>
+
+      <p>
+        This is the single most important lesson from building TaskForge, a
+        cross-platform task manager that hit 4,200+ users in 90 days. Here's how
+        we approached offline-first sync, and the mistakes I'd avoid next time.
+      </p>
+
+      <h2>What "offline-first" actually means</h2>
+
+      <p>
+        Offline-first is a design philosophy, not a technical trick. The core
+        idea: your app should be fully usable with zero network. The network is
+        treated as an optimization, not a requirement.
+      </p>
+
+      <p>
+        In practice, this means every user action — creating a task, updating
+        a status, adding a comment — writes to a local store first. A background
+        process syncs that store with the server when the network is available.
+      </p>
+
+      <h2>The three layers of an offline-first app</h2>
+
+      <h3>1. Local persistence</h3>
+
+      <p>
+        We used <code>AsyncStorage</code> for small data and
+        <code>react-native-sqlite-storage</code> for structured task data. SQLite
+        gives you query power and transactional writes, which matters once
+        your data grows past a few hundred records.
+      </p>
+
+      <pre><code>// Example: writing a task locally first
+await db.executeSql(
+  `INSERT INTO tasks (id, title, status, updated_at, synced)
+   VALUES (?, ?, ?, ?, 0)`,
+  [uuid(), title, 'todo', Date.now()]
+);</code></pre>
+
+      <p>
+        Notice the <code>synced</code> column. Every row has a flag that tells
+        the sync engine whether it needs to be pushed to the server. Simple,
+        reliable, and easy to reason about.
+      </p>
+
+      <h3>2. A sync queue</h3>
+
+      <p>
+        When a user creates or updates a task, we don't call Firebase
+        immediately. We queue the operation locally. The queue is persisted, so
+        it survives app restarts.
+      </p>
+
+      <pre><code>type SyncOp = {
+  id: string;
+  entity: 'task' | 'comment';
+  action: 'create' | 'update' | 'delete';
+  payload: unknown;
+  createdAt: number;
+};</code></pre>
+
+      <p>
+        A background worker processes the queue when the device is online. On
+        success, it removes the op. On failure, it retries with exponential
+        backoff.
+      </p>
+
+      <h3>3. Conflict resolution</h3>
+
+      <p>
+        When two devices edit the same task offline, someone has to win. We
+        chose <strong>last-write-wins</strong> based on a server timestamp. It's
+        not perfect, but it's predictable — and predictability beats cleverness
+        for most teams.
+      </p>
+
+      <h2>The three mistakes I'd avoid next time</h2>
+
+      <h3>Mistake 1: Adding analytics in week six</h3>
+
+      <p>
+        We had no visibility into how users actually used the app until week
+        six. That's six weeks of building on assumptions. Add analytics — even
+        just basic event tracking — from day one.
+      </p>
+
+      <h3>Mistake 2: Underestimating the offline data model</h3>
+
+      <p>
+        We initially designed the sync layer assuming a single device per user.
+        Reality: 40% of users had two devices (phone + tablet). That required
+        reworking the conflict resolution. Design for multi-device from the
+        start.
+      </p>
+
+      <h3>Mistake 3: Not testing on real Nigerian networks</h3>
+
+      <p>
+        Simulators lie. A 2G connection on an emulator is not the same as a
+        real MTN connection in Benin City at 7 PM. We started testing on real
+        devices with real SIMs in week four — and immediately found three bugs
+        we'd never have caught otherwise.
+      </p>
+
+      <h2>Tools that made this easier</h2>
+
+      <ul>
+        <li><strong>Firebase Firestore:</strong> built-in offline persistence for reads and writes</li>
+        <li><strong>NetInfo:</strong> for detecting connection state changes</li>
+        <li><strong>Redux Persist:</strong> keeping app state across restarts</li>
+        <li><strong>Flipper:</strong> debugging network and storage in real time</li>
+      </ul>
+
+      <h2>Is offline-first worth it?</h2>
+
+      <p>
+        For most Nigerian-facing products, yes. The UX difference is dramatic.
+        Users stop noticing connectivity. The app feels fast even on 2G. And
+        retention improves — TaskForge hit 18% D30 retention, which is roughly
+        double the industry average for productivity apps.
+      </p>
+
+      <p>
+        The trade-off is complexity. Sync logic is hard to get right. But if
+        your users are in an environment where networks are unreliable, it's
+        the single highest-leverage investment you can make.
+      </p>
+
+      <div class="cs-cta" style="margin-top:3rem;">
+        <h3>Building something similar?</h3>
+        <p>I'm currently accepting new work for Q1 2026.</p>
+        <button type="button"
+                data-cal-link="zutatechnology/discovery-call"
+                data-cal-config='{"layout":"month_view"}'
+                class="btn btn-primary">
+          Book a Discovery Call <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-mark small">Z</span>
+        <span>Zuta<span>Technology</span></span>
+      </div>
+      <p class="footer-copy">© <span id="year"></span> Zuta Technology · Benin City, Nigeria</p>
+      <div class="footer-social">
+        <a href="mailto:zutatechnology@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+        <a href="tel:+2349158510486" aria-label="Phone"><i class="fas fa-phone"></i></a>
+        <a href="https://wa.me/2349158510486" aria-label="WhatsApp" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    (function () {
+      const calLinks = document.querySelectorAll('[data-cal-link]');
+      if (!calLinks.length) return;
+      (function (C, A, L) {
+        let p = function (a, ar) { a.q.push(ar); };
+        let d = C.document;
+        C.Cal = C.Cal || function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement('script')).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () { p(api, arguments); };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            if (typeof namespace === 'string') {
+              cal.ns[namespace] = cal.ns[namespace] || api;
+              p(cal.ns[namespace], ar);
+              p(cal, ['initNamespace', namespace]);
+            } else p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+      })(window, 'https://app.cal.com/embed/embed.js', 'init');
+      Cal('init', { origin: 'https://app.cal.com' });
+      calLinks.forEach((el) => {
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          Cal('openModal', {
+            calLink: el.dataset.calLink,
+            config: el.dataset.calConfig ? JSON.parse(el.dataset.calConfig) : {},
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

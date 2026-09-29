@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writing — Zuta Technology</title>
+  <meta name="description" content="Technical writing from Augustine at Zuta Technology — practical lessons on building software from Nigeria.">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%238200db'/%3E%3Ctext x='50' y='70' font-size='60' font-weight='bold' fill='white' text-anchor='middle' font-family='Inter,Arial,sans-serif'%3EZ%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-mark">Z</span>
+        <span class="logo-text">Zuta<span>Technology</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="../index.html#home">Home</a>
+        <a href="../index.html#portfolio">Work</a>
+        <a href="index.html" class="active">Writing</a>
+        <a href="../index.html#contact">Contact</a>
+        <a href="../index.html#contact" class="nav-cta">Start a Project <i class="fas fa-arrow-right"></i></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="blog-hero">
+      <div class="container">
+        <span class="eyebrow">Writing</span>
+        <h1>Notes from the build.</h1>
+        <p>Practical lessons on shipping software from Nigeria — architecture decisions, debugging stories, and honest takes.</p>
+      </div>
+    </div>
+
+    <section class="blog-list">
+      <div class="container">
+        <div class="blog-grid">
+
+          <article class="blog-card">
+            <div class="blog-meta">
+              <span>Engineering</span>
+              <span>7 min read</span>
+            </div>
+            <h2>React Native offline sync: a practical guide</h2>
+            <p>How I built offline-first sync for TaskForge using Firebase and local persistence — and the three mistakes I'd avoid next time.</p>
+            <a href="react-native-offline-sync.html" class="work-link">
+              Read article <i class="fas fa-arrow-right"></i>
+            </a>
+          </article>
+
+          <article class="blog-card">
+            <div class="blog-meta">
+              <span>Lessons</span>
+              <span>5 min read</span>
+            </div>
+            <h2>What I learned building TaskForge</h2>
+            <p>Six hard-earned lessons from shipping a cross-platform app in 8 weeks — from choosing Firebase to adding analytics too late.</p>
+            <a href="#" class="work-link">
+              Read article <i class="fas fa-arrow-right"></i>
+            </a>
+          </article>
+
+          <article class="blog-card">
+            <div class="blog-meta">
+              <span>Architecture</span>
+              <span>9 min read</span>
+            </div>
+            <h2>PostgreSQL performance tuning for small teams</h2>
+            <p>The five indexes, three query patterns, and one config change that cut our dashboard load times by 68%.</p>
+            <a href="#" class="work-link">
+              Read article <i class="fas fa-arrow-right"></i>
+            </a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-mark small">Z</span>
+        <span>Zuta<span>Technology</span></span>
+      </div>
+      <p class="footer-copy">© <span id="year"></span> Zuta Technology · Benin City, Nigeria</p>
+      <div class="footer-social">
+        <a href="mailto:zutatechnology@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+        <a href="tel:+2349158510486" aria-label="Phone"><i class="fas fa-phone"></i></a>
+        <a href="https://wa.me/2349158510486" aria-label="WhatsApp" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
