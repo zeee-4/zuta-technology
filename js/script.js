@@ -1,12 +1,10 @@
-/* ==========================================================================
-   ZUTA TECHNOLOGY — Main Script
-   ========================================================================== */
+/* ==================================================
+   ZUTA TECHNOLOGY · SCRIPT
+   ================================================== */
 (function () {
   'use strict';
 
-  /* ----------------------------------------
-     PAGE NAVIGATION
-  ---------------------------------------- */
+  /* ---------- PAGE NAVIGATION ---------- */
   const pages = document.querySelectorAll('.page');
   const navLinks = document.querySelectorAll('.nav-links a[data-page]');
   const allTriggers = document.querySelectorAll('[data-page]');
@@ -26,14 +24,7 @@
     });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    if (navMenu && navMenu.classList.contains('open')) {
-      navMenu.classList.remove('open');
-      navToggle?.classList.remove('open');
-      navToggle?.setAttribute('aria-expanded', 'false');
-    }
-
-    // Update URL hash without page jump
+    closeMenu();
     history.replaceState(null, '', '#' + pageId);
   }
 
@@ -47,7 +38,7 @@
     });
   });
 
-  // Deep-link support: open page based on URL hash
+  // Deep-link support
   (function initFromHash() {
     const hash = window.location.hash.replace('#', '');
     if (hash && document.getElementById(hash)) {
@@ -57,9 +48,15 @@
     }
   })();
 
-  /* ----------------------------------------
-     MOBILE MENU TOGGLE
-  ---------------------------------------- */
+  /* ---------- MOBILE MENU ---------- */
+  function closeMenu() {
+    if (navMenu && navMenu.classList.contains('open')) {
+      navMenu.classList.remove('open');
+      navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+  }
+
   if (navToggle && navMenu) {
     navToggle.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -74,19 +71,46 @@
         !navMenu.contains(e.target) &&
         !navToggle.contains(e.target)
       ) {
-        navMenu.classList.remove('open');
-        navToggle.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
+        closeMenu();
       }
     });
   }
 
-  /* ----------------------------------------
-     CONTACT FORM
-     Sends via FormSubmit.co (free, no signup)
-     First submission triggers a one-time email verification.
-     Swap the action URL with your Formspree endpoint if you prefer.
-  ---------------------------------------- */
+  /* ---------- ANIMATED COUNTERS ---------- */
+  const counters = document.querySelectorAll('.stat-num[data-count]');
+  if (counters.length && 'IntersectionObserver' in window) {
+    const animateCounter = (el) => {
+      const target = parseInt(el.dataset.count, 10);
+      const duration = 1400;
+      const start = performance.now();
+
+      const step = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        // easeOutCubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(target * eased);
+        if (progress < 1) requestAnimationFrame(step);
+      };
+
+      requestAnimationFrame(step);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !entry.target.dataset.done) {
+            entry.target.dataset.done = '1';
+            animateCounter(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    counters.forEach((c) => observer.observe(c));
+  }
+
+  /* ---------- CONTACT FORM ---------- */
   const contactForm = document.getElementById('contactForm');
   const formStatus = document.getElementById('formStatus');
 
@@ -104,29 +128,26 @@
       submitBtn.disabled = true;
       submitBtn.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
 
-      const formData = new FormData(contactForm);
-
       try {
-        // FormSubmit endpoint — replace email below with your actual email
         const res = await fetch('https://formsubmit.co/ajax/zutatechnology@gmail.com', {
           method: 'POST',
-          headers: { 'Accept': 'application/json' },
-          body: formData,
+          headers: { Accept: 'application/json' },
+          body: new FormData(contactForm),
         });
 
         if (!res.ok) throw new Error('Network error');
 
         formStatus.hidden = false;
         formStatus.querySelector('span').textContent =
-          'Thank you! Your message has been received. I\'ll reply within 24 hours.';
+          'Message received. We\'ll reply within 24 hours.';
         contactForm.reset();
       } catch (err) {
         formStatus.hidden = false;
         formStatus.style.background = '#fef2f2';
         formStatus.style.borderColor = '#fecaca';
-        formStatus.style.color = '#dc2626';
+        formStatus.style.color = '#b91c1c';
         formStatus.querySelector('span').textContent =
-          'Sorry, something went wrong. Please email zutatechnology@gmail.com directly.';
+          'Something went wrong. Please email zutatechnology@gmail.com directly.';
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalHTML;
@@ -140,9 +161,7 @@
     });
   }
 
-  /* ----------------------------------------
-     FOOTER YEAR
-  ---------------------------------------- */
+  /* ---------- FOOTER YEAR ---------- */
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 })();
