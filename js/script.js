@@ -129,7 +129,7 @@
       submitBtn.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
 
       try {
-        const res = await fetch('https://formsubmit.co/ajax/zutatechnology@gmail.com', {
+        const res = await fetch('https://formsubmit.co/ajax/technologyzuta@gmail.com', {
           method: 'POST',
           headers: { Accept: 'application/json' },
           body: new FormData(contactForm),
@@ -147,7 +147,7 @@
         formStatus.style.borderColor = '#fecaca';
         formStatus.style.color = '#b91c1c';
         formStatus.querySelector('span').textContent =
-          'Something went wrong. Please email zutatechnology@gmail.com directly.';
+          'Something went wrong. Please email technologyzuta@gmail.com directly.';
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalHTML;
